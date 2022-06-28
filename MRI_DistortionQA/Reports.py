@@ -601,6 +601,10 @@ class MRI_QA_Reporter:
         self._fig_3D_planes.write_html(self.output_folder / threeD_plane_save_name, full_html=False, include_plotlyjs='cdn')
         self._jinja_dict['cutplanes_source'] = threeD_plane_save_name
 
+        hist_save_name = self._unique_name_generator(self.output_folder / 'plots', 'histogram.html')
+        self._figure_plot_histogram.write_html(self.output_folder / hist_save_name,full_html=False, include_plotlyjs='cdn' )
+        self._jinja_dict['hist_source'] = hist_save_name
+
         if self.B0_harmonics is not None:
             DSV_surface_save_name = self._unique_name_generator(self.output_folder / 'plots', 'DSV_surface.html',)
             self._fig_DSV_surface.write_html(self.output_folder / DSV_surface_save_name, full_html=False, include_plotlyjs='cdn')

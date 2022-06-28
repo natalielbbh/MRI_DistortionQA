@@ -13,7 +13,7 @@ distorted_volume = MarkerVolume(data_loc1 / '02 gre_trans_AP_330'/ 'Original'/'s
 ground_truth_volume = MarkerVolume(data_loc / 'CT', r_max=300)
 
 # matched volumes
-matched_volume = MatchedMarkerVolumes(ground_truth_volume, distorted_volume,                  ReferenceMarkers=11)
+matched_volume = MatchedMarkerVolumes(ground_truth_volume, distorted_volume, ReferenceMarkers=11)
 matched_volume.MatchedCentroids.to_csv('Matched_Markers.csv')  # for use in later examples
 
 # plot the match
