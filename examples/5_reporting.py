@@ -21,7 +21,7 @@ G_z_harmonics = pd.read_csv('_example_data/G_z_harmonics.csv', index_col=0).sque
 B0_harmonics  = pd.read_csv('_example_data/B0_harmonics.csv', index_col=0).squeeze("columns")
 
 report = MRI_QA_Reporter(gradient_harmonics=[G_x_harmonics, G_y_harmonics, G_z_harmonics], B0_harmonics=B0_harmonics,
-                         r_outer=150, dicom_data=dicom_data_loc, tests_to_run=DefaultTestSuite)
+                         r_outer=150, dicom_data=dicom_data_loc, tests_to_run=DefaultTestSuite, show_plots=True)
 report.write_html_report()
 
 

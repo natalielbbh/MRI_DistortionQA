@@ -169,6 +169,7 @@ class MRI_QA_Reporter:
 
         # put plots here
         self._plot_distortion_v_r()
+        self._plot_histogram() #add histogram plot
         self._plot_3D_cutplanes()
         self._plot_B0_surface()
         self._build_homogeneity_report_table()
@@ -444,6 +445,19 @@ class MRI_QA_Reporter:
                     zaxis_title='Z Axis (mm)'))
         if self._show_plots:
             self._fig_3D_planes.show()
+
+    def _plot_histogram(self):
+    # plot histogram of distortion in mm against the number of points with that value of distorion
+        DistortionData = self._MatchedMarkerVolume.abs_dis
+
+        self._figure_plot_histogram = px.histogram(DistortionData)
+
+
+        self._figure_plot_histogram.update_layout(template=self._plotly_theme,title= "Distortion vs Number of points", xaxis_title="Distortion (mm)", yaxis_title=" Number of Points")
+
+        if self._show_plots:
+            self._figure_plot_histogram.show()
+
 
 
     def _plot_B0_surface(self):
