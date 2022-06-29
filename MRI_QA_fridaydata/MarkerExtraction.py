@@ -9,6 +9,7 @@ import pandas as pd
 # gt_volume = MarkerVolume(gt_data_loc, r_max=300)
 # gt_volume.plot_3D_markers()  # produce a quick plot of marker positions
 
-distorted_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/02 gre_trans_AP_330/Original/slicer_centroids.mrk.json')
-dis_volume = MarkerVolume(distorted_data_loc, n_markers_expected=336, iterative_segmentation=True)
-
+distorted_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/06 gre_cor_RL_330/Original')
+dis_volume = MarkerVolume(distorted_data_loc, n_markers_expected=336, iterative_segmentation=True,
+                          r_max=170)
+MarkerVolume.save_dicom_data(dis_volume)
