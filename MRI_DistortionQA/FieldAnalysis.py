@@ -320,7 +320,7 @@ class SphericalHarmonicFit:
         plt.tight_layout()
         plt.show()
 
-    def print_key_harmonics(self, cut_off=.1):
+    def print_key_harmonics(self, cut_off=.1): # change the cuttoff?
         """
         print the harmonics with value > cut_off to the terminal in pk-pk.
 
