@@ -120,7 +120,7 @@ take a value of -1, or 1. pull requests making this easier to use very welcome!<
 <dl class="py method">
 <dt class="sig sig-object py" id="MRI_DistortionQA.MarkerAnalysis.MarkerVolume.export_to_slicer">
 <span class="sig-name descname"><span class="pre">export_to_slicer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'slicer_centroids'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.MarkerAnalysis.MarkerVolume.export_to_slicer" title="Permalink to this definition"></a></dt>
-<dd><p>export a csv file that can be read in by slicer, allowing a good way to visualise marker segmentation
+<dd><p>export a json file that can be read in by slicer, allowing a good way to visualise marker segmentation
 performance. This file will be saved at the same spot as input data if dicom was input, otherwise it will be
 saved to save_path.</p>
 </dd></dl>
@@ -538,7 +538,7 @@ if the cartesian columns ‘x’, ‘y’, ‘z’ already exist, they will be o
 
 <dl class="py function">
 <dt class="sig sig-object py" id="MRI_DistortionQA.utilities.dicom_to_numpy">
-<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.utilities.</span></span><span class="sig-name descname"><span class="pre">dicom_to_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_dicoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FilesToReadIn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dcm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_XYZ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.utilities.dicom_to_numpy" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.utilities.</span></span><span class="sig-name descname"><span class="pre">dicom_to_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_dicoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FilesToReadIn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dcm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_XYZ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.utilities.dicom_to_numpy" title="Permalink to this definition"></a></dt>
 <dd><p>This function does two things:</p>
 <ol class="arabic simple">
 <li><p>Loads all the dicom files in path_to_dicoms in a numpy array. data is ordered according to [row, column, slice]</p></li>
@@ -551,18 +551,21 @@ if the cartesian columns ‘x’, ‘y’, ‘z’ already exist, they will be o
 <li><p><strong>FilesToReadIn</strong> (<em>list</em><em>, </em><em>optional</em>) – By default, this function will read in all files of file type file_extension. If you only want
 to read in a subset of files, you can specify them with FilesToReadIn</p></li>
 <li><p><strong>file_extension</strong> (<em>string</em>) – extension of dicom files, e.g. ‘dcm’ or ‘IMA’</p></li>
-<li><p><strong>return_XYZ</strong> (<em>bool</em>) – if True, will build and return three matrics containing the X, Y, and Z coords at each i,j,k
+<li><p><strong>return_XYZ</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True, will build and return three matrics containing the X, Y, and Z coords at each i,j,k
 pixel.</p></li>
+<li><p><strong>zero_pad</strong> (<em>int</em><em>, </em><em>optional</em>) – this many zeros will be placed around the returned volume and the coordinates updated accordingly.
+main use case was for distortion correction. Note that all returned objects will be self consistently affected
+by this parameter</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns ImageArray</dt>
-<dd class="field-even"><p>a numpy array of voxels</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ImageArray: a numpy array of voxels</p>
 </dd>
-<dt class="field-odd">Returns dicom_affine</dt>
-<dd class="field-odd"><p>a matrix that transforms the [r,c,s] indices into [x,y,z] coordinates</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dicom_affine: a matrix that transforms the [r,c,s] indices into [x,y,z] coordinates</p>
 </dd>
-<dt class="field-even">Returns (X, Y, Z)</dt>
-<dd class="field-even"><p>Coordinate arrays the same size as ImageArray. Optional</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(X, Y, Z): Coordinate arrays the same size as ImageArray. Optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -660,6 +663,17 @@ this option for cleaner code elsewhere. Gy_Harmonics and Gz_Harmonics are the sa
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="MRI_DistortionQA.utilities.plot_MatchedMarkerVolume_hist">
+<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.utilities.</span></span><span class="sig-name descname"><span class="pre">plot_MatchedMarkerVolume_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MatchedMarkerVolumeList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.utilities.plot_MatchedMarkerVolume_hist" title="Permalink to this definition"></a></dt>
+<dd><p>creates a histogram of absolute distortion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>MatchedMarkerVolumeList</strong> – a list of MatchedMarkerVolumes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="MRI_DistortionQA.utilities.plot_compressed_MarkerVolumes">
 <span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.utilities.</span></span><span class="sig-name descname"><span class="pre">plot_compressed_MarkerVolumes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MarkerVolumeList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.utilities.plot_compressed_MarkerVolumes" title="Permalink to this definition"></a></dt>
 <dd><p>plot overlay of compressed marker volumes (z coord is ignored)</p>
@@ -705,29 +719,37 @@ elevation, azimuth, and r</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="MRI_DistortionQA.utilities.sort_dicom_slices">
+<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.utilities.</span></span><span class="sig-name descname"><span class="pre">sort_dicom_slices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicom_datasets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.utilities.sort_dicom_slices" title="Permalink to this definition"></a></dt>
+<dd><p>sort slices by instance number
+:param dicom_datasets: list of pydicom files
+:return: sorted list of pydicom files</p>
+</dd></dl>
+
 </section>
 <section id="module-MRI_DistortionQA.calculate_harmonics">
 <span id="calculate-harmonics"></span><h2>calculate_harmonics<a class="headerlink" href="#module-MRI_DistortionQA.calculate_harmonics" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="MRI_DistortionQA.calculate_harmonics.calculate_harmonics">
-<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.calculate_harmonics.</span></span><span class="sig-name descname"><span class="pre">calculate_harmonics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distorted_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distorted_volume_rev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dicom_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.calculate_harmonics.calculate_harmonics" title="Permalink to this definition"></a></dt>
-<dd><p>this function is essentially a wrapper of convenience. Given a ground truth MarkerVolume
-and a forward (distorted) MarkerVolume, it will calculate and return the Gx, Gy, and Gz
-harmonics. Optionally, you can also pass a back MarkerVolume (reverse gradient) in which case
-it will also calcualte the B0 harmonics. Basically this makes your life easier, but you give up fine control over
-the marker matching, B calc, and harmonic fitting steps.
+<span class="sig-prename descclassname"><span class="pre">MRI_DistortionQA.calculate_harmonics.</span></span><span class="sig-name descname"><span class="pre">calculate_harmonics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MagneticFields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRI_DistortionQA.calculate_harmonics.calculate_harmonics" title="Permalink to this definition"></a></dt>
+<dd><p>This function is essentially a wrapper of convenience. Given a set of B fields and dicom_data,
+it will calculate and return the Gx, Gy, and Gz harmonics.
 Note that the gradient harmonics will be normalised to a gradient strengt of 1 mT/m</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ground_truth_volume</strong> (<em>object</em>) – ground truth MarkerVolume</p></li>
-<li><p><strong>distorted_volume</strong> (<em>object</em>) – distorted MarkerVolume</p></li>
-<li><p><strong>distorted_volume_rev</strong> (<em>object</em><em>, </em><em>optional</em>) – distorted MarkerVolume taken with reverse gradient</p></li>
+<li><p><strong>MagneticFields</strong> (<em>pandas dataframe</em>) – a pandas dataframe with columns [‘x’, ‘y’, ‘z’, ‘B_Gx’, ‘B_Gy’, ‘B_Gz’, ‘B0’]. B0 is optional.
+x, y, z are in mm and the fields are in any unit - the harmonics will reflect the units</p></li>
+<li><p><strong>dicom_data</strong> (<em>dict</em>) – a dict containing required dicom data, such as that generated within the MarkerVolume class</p></li>
 <li><p><strong>n_order</strong> (<em>int</em><em>, </em><em>optional</em>) – order of harmonic fit</p></li>
+<li><p><strong>norm</strong> – Can pass a list of four valuues, the four returned harmonic lists will be normalised accordingly.
+e.g. norm = [2,2,2,2] will divide all harmonics by 2. This is useful so you can normalise the fields to some
+value</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>B0_Harmonics, G_x_Harmonics, G_y_Harmonics, G_z_Harmonics</p>
+<dd class="field-even"><p>G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics</p>
 </dd>
 </dl>
 </dd></dl>
