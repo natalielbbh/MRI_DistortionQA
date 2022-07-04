@@ -58,3 +58,4 @@ def calculate_harmonics(MagneticFields, n_order=8, norm=None):
         B0_Harmonics = None
 
     return G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics
+

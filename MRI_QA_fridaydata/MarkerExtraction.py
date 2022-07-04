@@ -13,3 +13,4 @@ distorted_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/06 gre_cor
 dis_volume = MarkerVolume(distorted_data_loc, n_markers_expected=336, iterative_segmentation=True,
                           r_max=170)
 MarkerVolume.save_dicom_data(dis_volume)
+MarkerVolume.export_to_slicer(dis_volume)

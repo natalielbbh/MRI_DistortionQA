@@ -15,11 +15,11 @@ dicom_data = get_dicom_data(dicom_data_loc)
 gradient_strength = np.array(dicom_data['gradient_strength']) * 1e3
 normalisation_factor = [1/gradient_strength[0], 1/gradient_strength[1], 1/gradient_strength[2], 1]  # this normalised gradient harmonics to 1mT/m
 
-G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
+G_x_Harmonics1, G_y_Harmonics1, G_z_Harmonics1, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
 # note that B0_harmonics is None as we did not provide distorted_volume_rev to calculate_harmonics
-G_x_Harmonics.harmonics.to_csv('G_X_Harmonics.csv')
-G_y_Harmonics.harmonics.to_csv('G_y_Harmonics.csv')
-G_z_Harmonics.harmonics.to_csv('G_z_Harmonics.csv')
+G_x_Harmonics1.harmonics.to_csv('G_X_Harmonics.csv')
+G_y_Harmonics1.harmonics.to_csv('G_y_Harmonics.csv')
+G_z_Harmonics1.harmonics.to_csv('G_z_Harmonics.csv')
 
 
 FieldData = pd.read_csv('Bfields1.csv', index_col=0).squeeze("columns")
@@ -28,11 +28,11 @@ dicom_data = get_dicom_data(dicom_data_loc)
 gradient_strength = np.array(dicom_data['gradient_strength']) * 1e3
 normalisation_factor = [1/gradient_strength[0], 1/gradient_strength[1], 1/gradient_strength[2], 1]  # this normalised gradient harmonics to 1mT/m
 
-G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
+G_x_Harmonics2, G_y_Harmonics2, G_z_Harmonics2, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
 # note that B0_harmonics is None as we did not provide distorted_volume_rev to calculate_harmonics
-G_x_Harmonics.harmonics.to_csv('1G_X_Harmonics.csv')
-G_y_Harmonics.harmonics.to_csv('1G_y_Harmonics.csv')
-G_z_Harmonics.harmonics.to_csv('1G_z_Harmonics.csv')
+G_x_Harmonics2.harmonics.to_csv('1G_X_Harmonics.csv')
+G_y_Harmonics2.harmonics.to_csv('1G_y_Harmonics.csv')
+G_z_Harmonics2.harmonics.to_csv('1G_z_Harmonics.csv')
 
 FieldData = pd.read_csv('Bfields2.csv', index_col=0).squeeze("columns")
 dicom_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/04 gre_sag_AP_330/Original/dicom_data.json' )# previosly saved from a MarkerVolume
@@ -40,11 +40,11 @@ dicom_data = get_dicom_data(dicom_data_loc)
 gradient_strength = np.array(dicom_data['gradient_strength']) * 1e3
 normalisation_factor = [1/gradient_strength[0], 1/gradient_strength[1], 1/gradient_strength[2], 1]  # this normalised gradient harmonics to 1mT/m
 
-G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
+G_x_Harmonics3, G_y_Harmonics3, G_z_Harmonics3, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
 # note that B0_harmonics is None as we did not provide distorted_volume_rev to calculate_harmonics
-G_x_Harmonics.harmonics.to_csv('2G_X_Harmonics.csv')
-G_y_Harmonics.harmonics.to_csv('2G_y_Harmonics.csv')
-G_z_Harmonics.harmonics.to_csv('2G_z_Harmonics.csv')
+G_x_Harmonics3.harmonics.to_csv('2G_X_Harmonics.csv')
+G_y_Harmonics3.harmonics.to_csv('2G_y_Harmonics.csv')
+G_z_Harmonics3.harmonics.to_csv('2G_z_Harmonics.csv')
 
 FieldData = pd.read_csv('Bfields3.csv', index_col=0).squeeze("columns")
 dicom_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/05 gre_sag_PA_330/Original/dicom_data.json' )# previosly saved from a MarkerVolume
@@ -52,11 +52,11 @@ dicom_data = get_dicom_data(dicom_data_loc)
 gradient_strength = np.array(dicom_data['gradient_strength']) * 1e3
 normalisation_factor = [1/gradient_strength[0], 1/gradient_strength[1], 1/gradient_strength[2], 1]  # this normalised gradient harmonics to 1mT/m
 
-G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
+G_x_Harmonics4, G_y_Harmonics4, G_z_Harmonics4, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
 # note that B0_harmonics is None as we did not provide distorted_volume_rev to calculate_harmonics
-G_x_Harmonics.harmonics.to_csv('3G_X_Harmonics.csv')
-G_y_Harmonics.harmonics.to_csv('3G_y_Harmonics.csv')
-G_z_Harmonics.harmonics.to_csv('3G_z_Harmonics.csv')
+G_x_Harmonics4.harmonics.to_csv('3G_X_Harmonics.csv')
+G_y_Harmonics4.harmonics.to_csv('3G_y_Harmonics.csv')
+G_z_Harmonics4.harmonics.to_csv('3G_z_Harmonics.csv')
 
 FieldData = pd.read_csv('Bfields4.csv', index_col=0).squeeze("columns")
 dicom_data_loc = Path('/Users/nataliegironda/Desktop/20220624QAQA/06 gre_cor_RL_330/Original/dicom_data.json' )# previosly saved from a MarkerVolume
@@ -64,9 +64,13 @@ dicom_data = get_dicom_data(dicom_data_loc)
 gradient_strength = np.array(dicom_data['gradient_strength']) * 1e3
 normalisation_factor = [1/gradient_strength[0], 1/gradient_strength[1], 1/gradient_strength[2], 1]  # this normalised gradient harmonics to 1mT/m
 
-G_x_Harmonics, G_y_Harmonics, G_z_Harmonics, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
+G_x_Harmonics5, G_y_Harmonics5, G_z_Harmonics5, B0_Harmonics = calculate_harmonics(FieldData, norm=normalisation_factor, n_order=8)
 # note that B0_harmonics is None as we did not provide distorted_volume_rev to calculate_harmonics
-G_x_Harmonics.harmonics.to_csv('4G_X_Harmonics.csv')
-G_y_Harmonics.harmonics.to_csv('4G_y_Harmonics.csv')
-G_z_Harmonics.harmonics.to_csv('4G_z_Harmonics.csv')
+G_x_Harmonics5.harmonics.to_csv('4G_X_Harmonics.csv')
+G_y_Harmonics5.harmonics.to_csv('4G_y_Harmonics.csv')
+G_z_Harmonics5.harmonics.to_csv('4G_z_Harmonics.csv')
+
+#print thw bar plot
+#datafile = pd.read_csv('/Users/nataliegironda/Documents/GitHub/MRI_DistortionQA/MRI_QA_fridaydata/G_X_Harmonics.csv')
+#print(np.array(datafile))
 
