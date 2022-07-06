@@ -12,7 +12,7 @@ this_file_loc = Path(__file__).parent.resolve()
 
 gt_data_loc = data_loc / 'CT'
 mr_data_loc = data_loc / '04 gre_trans_AP_330'/ 'Original'
-mr_data_loc_reverse_gradient = data_loc / '05 gre_trans_PA_330'/ 'Original'
+mr_data_loc_reverse_gradient = data_loc / '09 gre_cor_LR_330'/ 'Original'
 
 gt_volume = MarkerVolume(gt_data_loc / 'slicer_centroids.mrk.json', r_max=180)
 # gt_volume.plot_3D_markers()  # produce a quick plot of marker positions

@@ -799,6 +799,9 @@ class MatchedMarkerVolumes:
 
         return MatchedCentroids
 
+    #check if distortion exceeds some threshold
+  
+
     def _handle_double_matched_markers(self):
         """
         Checks if any distorted markers have been matched to the same ground truth point
