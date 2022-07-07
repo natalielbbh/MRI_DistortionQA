@@ -234,6 +234,7 @@ class MarkerVolume:
         else:
             self.dicom_data = None
 
+
     def _calculate_chemical_shift_vector(self, fat_shift_direction=1):
         """
         Calculates a chemical shift vector (x,y,z) to be applied to each marker to account for the fat/water shift.
@@ -349,6 +350,10 @@ class MarkerVolume:
         ThresholdVolume = BlurredVolume > self._cutoffpoint
 
         return ThresholdVolume, BlurredVolume
+    def _test(self):
+       # if maxdistortion > self._cutoffpoint:
+          #  print('MAX DISTORTION HAS EXCEEDED CUT OFF POINT')
+        print(self._cutoffpoint)
 
     def _find_contour_centroids(self):
         """
@@ -799,8 +804,6 @@ class MatchedMarkerVolumes:
 
         return MatchedCentroids
 
-    #check if distortion exceeds some threshold
-  
 
     def _handle_double_matched_markers(self):
         """
