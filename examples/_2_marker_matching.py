@@ -36,7 +36,6 @@ for index in range(0,528): #distorted_volume_rev.MarkerCentroids.T:
 
 # check if he distortion feild is not smoothly varying
 tolerance = 10 # acceptable smoothing variation
-
 nearby = 30 #acceptable distance between nearby markers
 #for index1 in range(0,528): #change the number of points depending on marker points on phantom
 xDirection = matched_volume.MatchedCentroids['x_gnl'] - matched_volume.MatchedCentroids['x_gt']
@@ -47,6 +46,10 @@ for index3 in range(0, 528):  # distorted_volume_rev.MarkerCentroids.T:
     xcoordinate = xDirection[index3]
     ycoordinate = yDirection[index3]
     zcoordinate = zDirection[index3]
+
+    numberNearby = 0 #count the number of markers nearby
+    totalDistortionFeilds = 0 # count the total distortion feilds
+
     for index4 in range(0,528):
         if index3 != index4: #dont check the same point against itself
             xCalc = xcoordinate - xDirection[index4]
@@ -56,5 +59,8 @@ for index3 in range(0, 528):  # distorted_volume_rev.MarkerCentroids.T:
                               + pow(yCalc, 2)
                               + pow(zCalc, 2))
             if value < nearby: #if nearby check if its within the tolerance
+                numberNearby = numberNearby + 1
                 if (xCalc or yCalc or zCalc) > tolerance:
-                    print('distortion field is not smoothly varying')
+                    totalDistortionFeilds = totalDistortionFeilds + 1
+    print(f'Marker {index3} has {totalDistortionFeilds} distortion feild that are not smoothly varying')
+    print(f'Marker {index3} has {numberNearby} markers nearby and an absolute distortion of {value}')
