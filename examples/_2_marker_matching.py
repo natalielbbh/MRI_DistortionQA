@@ -1,8 +1,6 @@
 import sys
 from pathlib import Path
 import math
-
-
 import numpy as np
 
 from MRI_DistortionQA.MarkerAnalysis import MarkerVolume
@@ -23,14 +21,40 @@ matched_volume = MatchedMarkerVolumes(ground_truth_volume, distorted_volume, Rev
                                     ReferenceMarkers=11)
 matched_volume.MatchedCentroids.to_csv(data_loc / 'Matched_Markers.csv')  # for use in later examples
 
+# check if max distortion exceeds some threshold
 threshold = 5 #change this threshold if needed
+distanceBetweenMarkers = []
 for index in range(0,528): #distorted_volume_rev.MarkerCentroids.T:
-    distanceBetweenMarkers = math.sqrt(pow(matched_volume.MatchedCentroids['x_gnl'][index] - matched_volume.MatchedCentroids['x_gt'][index], 2)
+    val = math.sqrt(pow(matched_volume.MatchedCentroids['x_gnl'][index] - matched_volume.MatchedCentroids['x_gt'][index], 2)
                               + pow(matched_volume.MatchedCentroids['y_gnl'][index] - matched_volume.MatchedCentroids['y_gt'][index], 2)
                               + pow(matched_volume.MatchedCentroids['z_gnl'][index] - matched_volume.MatchedCentroids['z_gt'][index], 2))
-    if distanceBetweenMarkers > threshold:
+    distanceBetweenMarkers.append(val) #magnitude
+    if val > threshold:
         print('The max distortion has exceeded the threshold')
 
 
 
+# check if he distortion feild is not smoothly varying
+tolerance = 10 # acceptable smoothing variation
 
+nearby = 30 #acceptable distance between nearby markers
+#for index1 in range(0,528): #change the number of points depending on marker points on phantom
+xDirection = matched_volume.MatchedCentroids['x_gnl'] - matched_volume.MatchedCentroids['x_gt']
+yDirection = matched_volume.MatchedCentroids['y_gnl'] - matched_volume.MatchedCentroids['y_gt']
+zDirection = matched_volume.MatchedCentroids['z_gnl'] - matched_volume.MatchedCentroids['z_gt']
+
+for index3 in range(0, 528):  # distorted_volume_rev.MarkerCentroids.T:
+    xcoordinate = xDirection[index3]
+    ycoordinate = yDirection[index3]
+    zcoordinate = zDirection[index3]
+    for index4 in range(0,528):
+        if index3 != index4: #dont check the same point against itself
+            xCalc = xcoordinate - xDirection[index4]
+            yCalc = ycoordinate - yDirection[index4]
+            zCalc = zcoordinate - zDirection[index4]
+            value = math.sqrt(pow(xCalc, 2)
+                              + pow(yCalc, 2)
+                              + pow(zCalc, 2))
+            if value < nearby: #if nearby check if its within the tolerance
+                if (xCalc or yCalc or zCalc) > tolerance:
+                    print('distortion field is not smoothly varying')
