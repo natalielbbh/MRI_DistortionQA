@@ -1,6 +1,8 @@
 from MRI_DistortionQA.Reports import MRI_QA_Reporter
 from MRI_DistortionQA.Reports import DefaultTestSuite
 from MRI_DistortionQA.utilities import get_dicom_data
+from MRI_DistortionQA.MarkerAnalysis import MarkerVolume
+
 import pandas as pd
 from pathlib import Path
 
@@ -19,8 +21,4 @@ report = MRI_QA_Reporter(gradient_harmonics=[G_x_harmonics, G_y_harmonics, G_z_h
                          r_outer=150, dicom_data=dicom_data_loc, tests_to_run=DefaultTestSuite)
 report.write_html_report()
 
-
-
-
-
-
+MarkerVolume.save_output_data(dicom_data,filename = "output_data",save_path = None)

@@ -541,6 +541,33 @@ class MarkerVolume:
         with open(full_filename,'w') as f:
             json.dump(self.dicom_data, f)
 
+    def save_output_data(self, dicom_data, filename = '', save_path = None ):
+        """
+                save the dicom data as csv.  This file will be saved at the same
+                spot as input data if dicom was input, otherwise it will be saved
+                to save_path.
+                """
+
+        if dicom_data is None:
+            logger.warning('cannot save dicom data because there is none...')
+            return
+
+        if save_path is None:
+            save_path = self.input_data_path
+        save_path = Path(save_path)
+        _file_name, _file_extension = os.path.splitext(filename)
+        if _file_extension == '':
+            _file_extension = '.csv'
+        filename = _file_name + _file_extension
+        full_filename = save_path / filename
+
+        with open(filename, 'w') as out_file:  # write all data into an output file to be used later on
+            for i in dicom_data:
+                outString = ""
+                outString += i
+                outString += str(dicom_data[i])
+                out_file.write(outString)
+
 
 class MatchedMarkerVolumes:
     """
@@ -1035,3 +1062,4 @@ class MatchedMarkerVolumes:
 
         plot_data = get_markers_as_function_of_z()
         plot_markers_inner(plot_data)
+
