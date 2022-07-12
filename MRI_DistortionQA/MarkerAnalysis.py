@@ -112,6 +112,12 @@ class MarkerVolume:
                 arrays = [el for el in data['markups'][0]['controlPoints']]
                 points = [el['position'] for el in arrays]
                 self.MarkerCentroids = pd.DataFrame(points, columns=['x', 'y', 'z'])
+               #look for dicom_data json file
+                try:
+                    with open(os.path.join(self.input_data_path.parent, 'dicom_data.json')) as f:
+                        self.dicom_data = json.load(f)
+                except:
+                    logger.warning(f'No dicom data found at {self.input_data_path.parent}.')
             else:
                 raise FileNotFoundError(f'could not find any data at {self.input_data_path}')
         elif isinstance(input_data, np.ndarray):
@@ -525,10 +531,10 @@ class MarkerVolume:
         spot as input data if dicom was input, otherwise it will be saved
         to save_path.
         """
-
         if self.dicom_data is None:
             logger.warning('cannot save dicom data because there is none...')
             return
+
         if save_path is None:
             save_path = self.input_data_path
         save_path = Path(save_path)
@@ -541,14 +547,13 @@ class MarkerVolume:
         with open(full_filename,'w') as f:
             json.dump(self.dicom_data, f)
 
-    def save_output_data(self, dicom_data, filename = '', save_path = None ):
+    def save_output_data(self, filename = '', save_path = None ):
         """
                 save the dicom data as csv.  This file will be saved at the same
                 spot as input data if dicom was input, otherwise it will be saved
                 to save_path.
                 """
-
-        if dicom_data is None:
+        if self.dicom_data is None:
             logger.warning('cannot save dicom data because there is none...')
             return
 
@@ -562,12 +567,11 @@ class MarkerVolume:
         full_filename = save_path / filename
 
         with open(filename, 'w') as out_file:  # write all data into an output file to be used later on
-            for i in dicom_data:
+            for i in self.dicom_data:
                 outString = ""
                 outString += i
-                outString += str(dicom_data[i])
+                outString += str(self.dicom_data[i])
                 out_file.write(outString)
-
 
 class MatchedMarkerVolumes:
     """

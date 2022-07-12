@@ -10,7 +10,7 @@ this_file_loc = Path(__file__).parent.resolve()
 data_loc = this_file_loc / '_example_data'
 dicom_data_loc = Path(data_loc / 'MR' / '04 gre_trans_AP_330' / 'dicom_data.json')  # previosly saved from a MarkerVolume
 dicom_data = get_dicom_data(dicom_data_loc)
-
+centroid_location = Path(data_loc/'MR'/'04 gre_trans_AP_330'/ 'slicer_centroids.mrk.json')
 
 G_x_harmonics = pd.read_csv(data_loc / 'G_x_Harmonics.csv', index_col=0).squeeze("columns")
 G_y_harmonics = pd.read_csv(data_loc / 'G_y_Harmonics.csv', index_col=0).squeeze("columns")
@@ -21,4 +21,5 @@ report = MRI_QA_Reporter(gradient_harmonics=[G_x_harmonics, G_y_harmonics, G_z_h
                          r_outer=150, dicom_data=dicom_data_loc, tests_to_run=DefaultTestSuite)
 report.write_html_report()
 
-MarkerVolume.save_output_data(dicom_data,filename = "output_data",save_path = None)
+output = MarkerVolume(centroid_location)
+output.save_output_data(filename = "output_data", save_path = None)
